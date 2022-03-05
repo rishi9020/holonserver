@@ -1,4 +1,17 @@
-
+<!DOCTYPE html>
+<html lang="en">
+        
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+        "width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+</head>
+   
+<body>
+    <div id="nodeContainer1"></div>
+    <script>
+     
 
   
   //-------------------------------------------------
@@ -13,7 +26,7 @@
   var colp5, colp6, colp7, colp8, colp9, colp10, colp11, colp12;
   var colp13, colourpallet, col1, col2, col3, col4;
 
-  tokenhash = "0x12w4tre22222222222234tr32222tr3rt";
+  tokenhash = "$TOKEN_HASH";
 
 
 
@@ -130,8 +143,7 @@
     col2 = colourpallet[rns[9] % 10];
     col3 = colourpallet[rns[10] % 10];
     col4 = colourpallet[rns[10] % 10];
-    
- 
+
     
     let nCanvas = createCanvas(WIDTH, HEIGHT);
     nCanvas.parent("nodeContainer1");
@@ -159,13 +171,11 @@
       " | ",
       gapN
     );
-    console.log("------------traits: ", [strokeScaleN, strokeVN, strokeLengthN, spacingN, phaseN, gapN])
   
     setTimeout(() => {
       console.log("saving canvas");
-      // const r = saveCanvas(nCanvas, "myCanvas2", "jpg");
-      // console.log("r", r);
-      // console.log("ncanvas", nCanvas);
+      // const r = saveCanvas(nCanvas, tokenhash, "jpg");
+      // console.log("Saved canvas successfully");
     }, 100);
   }
   
@@ -227,3 +237,8 @@
       saveCanvas(tokenhash, "png");
     }
   }
+
+    </script>
+</body>
+   
+</html>
