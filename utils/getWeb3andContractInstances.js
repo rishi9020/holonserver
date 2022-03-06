@@ -19,8 +19,8 @@ async function getWeb3andContractInstances() {
   );
   ICT_ABI = await JSON.parse(JSON.stringify(ICTFileResponse.data));
 
-  const LedNFT_CONTRACT_ADDRESS = LedNFT_ABI.networks[5].address;
-  const ICT_CONTRACT_ADDRESS = ICT_ABI.networks[5].address;
+  const LedNFT_CONTRACT_ADDRESS = LedNFT_ABI.networks[process.env.ETHEREUM_NETWORK_ID].address;
+  const ICT_CONTRACT_ADDRESS = ICT_ABI.networks[process.env.ETHEREUM_NETWORK_ID].address;
 
   const provider = new Provider(privatekey, rpcurl);
   const web3 = new Web3(provider);
