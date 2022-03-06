@@ -9,13 +9,13 @@ async function getWeb3andContractInstances() {
   let LedNFT_ABI, ICT_ABI;
 
   let ledNftFileResponse = await axios.get(
-    "https://raw.githubusercontent.com/visheshdvn/hosted-assets/main/webflow_goreli_ABIs/LedNFT.json"
+    process.env.LED_NFT_ABI
   );
 
   LedNFT_ABI = await JSON.parse(JSON.stringify(ledNftFileResponse.data));
 
   let ICTFileResponse = await axios.get(
-    "https://raw.githubusercontent.com/visheshdvn/hosted-assets/main/webflow_goreli_ABIs/IntensityChangeToken.json"
+    process.env.ICT_ABI
   );
   ICT_ABI = await JSON.parse(JSON.stringify(ICTFileResponse.data));
 
