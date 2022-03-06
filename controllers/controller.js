@@ -276,28 +276,38 @@ function _getAttributes(tokenhash) {
 
   return [
     {
+      "display_type": "boost_number",
       "trait_type": strokeScaleN, 
       "value": strokeScale
     },
     {
+      "display_type": "boost_number",
       "trait_type": strokeVN, 
       "value": strokeV
     },
     {
+      "display_type": "boost_number",
       "trait_type": strokeLengthN, 
       "value": strokeLength
     },
     {
+      "display_type": "boost_number",
       "trait_type": spacingN, 
       "value": spacing
     },
     {
+      "display_type": "boost_number",
       "trait_type": phaseN, 
       "value": phase
     },
     {
+      "display_type": "boost_number",
       "trait_type": gapN, 
       "value": gap
+    },
+    {
+      "trait_type": "testtype", 
+      "value": "testval" 
     }
   ]
 }
