@@ -29,7 +29,7 @@
   tokenhash = "$TOKEN_HASH";
 
 
-
+  let nCanvas;
   function setup() {
     console.log("--------------f1: ", tokenhash)
     seed = parseInt(tokenhash, 16);
@@ -44,8 +44,8 @@
     
     // Dimensionless Canvas setup
     DEFAULT_SIZE = 1500;
-    WIDTH = window.innerWidth * 0.25;
-    HEIGHT = window.innerWidth * 0.25;
+    WIDTH = window.innerWidth * 0.5;
+    HEIGHT = window.innerWidth * 0.5;
     DIM = Math.min(WIDTH, HEIGHT);
     M = DIM / DEFAULT_SIZE;
     
@@ -145,7 +145,7 @@
     col4 = colourpallet[rns[10] % 10];
 
     
-    let nCanvas = createCanvas(WIDTH, HEIGHT);
+    nCanvas = createCanvas(WIDTH, HEIGHT);
     nCanvas.parent("nodeContainer1");
   
     background(246, 241, 238);
@@ -172,11 +172,27 @@
       gapN
     );
   
-    setTimeout(() => {
+    setTimeout(async () => {
       console.log("saving canvas");
       // const r = saveCanvas(nCanvas, tokenhash, "jpg");
-      // console.log("Saved canvas successfully");
-    }, 100);
+      let aa = nCanvas.canvas.toDataURL();
+      console.log("---------SBG: ", aa)
+      let bb = new Blob( [ aa ], { type: 'text/plain' });
+      console.log("----------22L ", bb)
+
+      await fetch(`http://localhost:5000/api/svg/${tokenhash}`,{
+      method: 'post',
+      headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+      // body: JSON.stringify({ svg_data: nCanvas.canvas.toDataURL()}),
+      body: JSON.stringify({ svg_base64_data: aa })
+            }).then(response => response.json())
+      .then(data => console.log("aaaa: ", data));
+      
+      console.log("Saved canvas successfully");
+    }, 250);
   }
   
   function draw() {

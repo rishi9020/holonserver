@@ -13,7 +13,7 @@ const fs = require('fs');
 //   '554',  '1286'
 // ]
 
-const returnImage = async (req, res) => {
+const returnP5JSRenderedImageOnBrowser = async (req, res) => {
 
   try {
     const { web3, LedNFT_CONTRACT, ICT_CONTRACT } =
@@ -66,6 +66,7 @@ const returnImage = async (req, res) => {
           } else {
 
             let result = template.replace('$TOKEN_HASH', hash)
+            // console.log("============result: ", template)
             res.end(result);
           }
         });
@@ -76,11 +77,126 @@ const returnImage = async (req, res) => {
 
 };
 
+const addSVGForToken = async (req, res) => {
+  try {
+    console.log("----------reqBody: ", req.body.svg_base64_data.length);
+    console.log("--------------req.params: ", req.params);
+    fs.writeFile(`./images/${req.params.tokenHash}.txt`,  req.body.svg_base64_data, (err) => {
+      if (err)
+        console.log("E@@@@@:, ", err);
+      else {
+        console.log("File written successfully\n");
+        console.log("The written has the following contents:");
+        // console.log(fs.readFileSync("books.txt", "utf8"));
+      }
+    });
+
+    return res.send({ success: true })
+  } catch (error) {
+    console.error("ERROR:: ", error);
+    return res.send({ success: false })
+  }
+}
+
+const generateSVGFormatImage = async (req, res) => {
+
+  try {
+    const { web3, LedNFT_CONTRACT, ICT_CONTRACT } =
+      await getWeb3andContractInstances();
+    const { tokenId } = req.params;
+
+    const hash = await LedNFT_CONTRACT.methods.tokenHash(+tokenId).call();
+
+    console.log("---------th: ", hash)
+    let filePath;
+    if (hash === "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ) {
+      // token id does't exist (not minted yet)
+      console.log("Not minted yet");
+      filePath = path.join(__dirname, '..', 'images', 'notMinted.txt');
+     
+    } else {
+      filePath = path.join(__dirname, '..', 'images', hash);
+    }
+
+
+    
+    console.log("---------filePath: ", filePath)
+
+    const svgData = fs.readFileSync(filePath, { encoding: 'utf-8' });
+
+
+      var base64Data = svgData.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+      var img = Buffer.from(base64Data, 'base64');
+    
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Length': img.length
+      });
+      res.end(img);
+
+  //     console.log("---------ss-----------: ")
+  //     // res.setHeader('Content-Type', 'image/svg+xml');
+  //     loadSvgFile(filePath)
+  // .then(() => console.log('SVG Loaded successfully'))
+
+  //     console.log("-------------dd")
+      // res.sendFile(filePath);
+      // res.send(svgData)
+      
+    // Render page using renderFile method
+
+    //    fs.readFile(filePath, function read(err, data) {
+    //     if (err) {
+    //       console.log("----------w1: ",err)
+    //         throw err;
+    //     }
+    //     const content = data;
+
+    //     // Invoke the next step here however you like
+    //     console.log(content);   // Put all of the code here (not the best solution)
+    //     // processFile(content);   // Or put the next step in a function and invoke it
+    // });
+
+    // if (hash === "0x0000000000000000000000000000000000000000000000000000000000000000") {
+    //   const notMintedFilePath = path.join(__dirname, '..', 'views', 'notMinted.ejs');
+    //   ejs.renderFile(notMintedFilePath, {},
+    //     {}, function (err, template) {
+    //       if (err) {
+    //         console.log("Error while ejs.renderFile: ", err)
+    //         throw err;
+    //       } else {
+    //         res.end(template);
+    //       }
+    //     });
+    // } else {
+     
+
+      // ejs.renderFile(filePath, {},
+      //   {}, function (err, template) {
+      //     if (err) {
+      //       console.log("Error while ejs.renderFile: ", err)
+      //       throw err;
+      //     } else {
+
+      //       let result = template.replace('$TOKEN_HASH', hash)
+      //       res.end(result);
+      //     }
+      //   });
+    // }
+  } catch (error) {
+    console.error("ERRORR: ", error);
+  }
+
+};
+
 
 const getAllSmartContractData = async (req, res) => {
   try {
+    console.log('---------c1')
     const { LedNFT_CONTRACT } =
       await getWeb3andContractInstances();
+      console.log('---------c2')
 
       let tokenIdToData = {};
 
@@ -122,8 +238,8 @@ const getAllSmartContractData = async (req, res) => {
 
     return res.status(200).json([{ nodes }]);
   } catch (err) {
-    console.log("error");
-    console.log(err);
+    console.log(`ERROR: ${err}`);
+    // console.log(err);
     return res.status(500).send({ status: "error" });
   }
 };
@@ -140,6 +256,7 @@ const getTokenURI = async (req, res) => {
       "description": "Holon project",
       "external_url": process.env.EXTERNAL_URL,
       "image": process.env.IMAGE_URL + tokenId,
+      "generator_url": process.env.GENERATOR_URL + tokenId,
       "name": "Holon Node",
       "attributes": []
     }
@@ -313,4 +430,4 @@ function _getAttributes(tokenhash) {
   ]
 }
 
-module.exports = { getAllSmartContractData, returnImage, getTokenURI };
+module.exports = { getAllSmartContractData, returnP5JSRenderedImageOnBrowser, getTokenURI, generateSVGFormatImage, addSVGForToken };
