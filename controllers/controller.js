@@ -116,7 +116,7 @@ const generateSVGFormatImage = async (req, res) => {
       filePath = path.join(__dirname, '..', 'images', 'notMinted.txt');
      
     } else {
-      filePath = path.join(__dirname, '..', 'images', hash);
+      filePath = path.join(__dirname, '..', 'images', `${hash}.txt`);
     }
 
 

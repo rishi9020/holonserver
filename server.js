@@ -2,7 +2,6 @@ const express = require("express");
 require("dotenv").config();
 var cors = require('cors')
 
-const p5Instance = require("./utils/generateArt/sketch");
 // console.log();
 // const ejs = require('ejs');
 
