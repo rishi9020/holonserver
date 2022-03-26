@@ -416,10 +416,6 @@ function _getAttributes(tokenhash) {
     {
       "trait_type": 'Gap', 
       "value": gapN
-    },
-    {
-      "trait_type": "testtype", 
-      "value": "testval" 
     }
   ]
 }
