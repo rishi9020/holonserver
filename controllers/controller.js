@@ -394,34 +394,28 @@ function _getAttributes(tokenhash) {
 
   return [
     {
-      "display_type": "number",
-      "trait_type": strokeScaleN, 
-      "value": strokeScale
+      "trait_type": 'Stroke scale', 
+      "value": strokeScaleN
     },
     {
-      "display_type": "number",
-      "trait_type": strokeVN, 
-      "value": strokeV
+      "trait_type": 'Stroke', 
+      "value": strokeVN
     },
     {
-      "display_type": "number",
-      "trait_type": strokeLengthN, 
-      "value": strokeLength
+      "trait_type": 'Stroke length', 
+      "value": strokeLengthN
     },
     {
-      "display_type": "number",
-      "trait_type": spacingN, 
-      "value": spacing
+      "trait_type": 'Spacing', 
+      "value": spacingN
     },
     {
-      "display_type": "number",
-      "trait_type": phaseN, 
-      "value": phase
+      "trait_type": 'Phase', 
+      "value": phaseN
     },
     {
-      "display_type": "number",
-      "trait_type": gapN, 
-      "value": gap
+      "trait_type": 'Gap', 
+      "value": gapN
     },
     {
       "trait_type": "testtype", 
