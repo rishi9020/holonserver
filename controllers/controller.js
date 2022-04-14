@@ -111,8 +111,7 @@ const generateSVGFormatImage = async (req, res) => {
     let filePath;
     if (hash === "0x0000000000000000000000000000000000000000000000000000000000000000"
     ) {
-      // token id does't exist (not minted yet)
-      console.log("Not minted yet");
+      console.log(`${tokenId} Not minted yet`);
       filePath = path.join(__dirname, '..', 'images', 'notMinted.txt');
      
     } else {
@@ -134,56 +133,7 @@ const generateSVGFormatImage = async (req, res) => {
         'Content-Length': img.length
       });
       res.end(img);
-
-  //     console.log("---------ss-----------: ")
-  //     // res.setHeader('Content-Type', 'image/svg+xml');
-  //     loadSvgFile(filePath)
-  // .then(() => console.log('SVG Loaded successfully'))
-
-  //     console.log("-------------dd")
-      // res.sendFile(filePath);
-      // res.send(svgData)
       
-    // Render page using renderFile method
-
-    //    fs.readFile(filePath, function read(err, data) {
-    //     if (err) {
-    //       console.log("----------w1: ",err)
-    //         throw err;
-    //     }
-    //     const content = data;
-
-    //     // Invoke the next step here however you like
-    //     console.log(content);   // Put all of the code here (not the best solution)
-    //     // processFile(content);   // Or put the next step in a function and invoke it
-    // });
-
-    // if (hash === "0x0000000000000000000000000000000000000000000000000000000000000000") {
-    //   const notMintedFilePath = path.join(__dirname, '..', 'views', 'notMinted.ejs');
-    //   ejs.renderFile(notMintedFilePath, {},
-    //     {}, function (err, template) {
-    //       if (err) {
-    //         console.log("Error while ejs.renderFile: ", err)
-    //         throw err;
-    //       } else {
-    //         res.end(template);
-    //       }
-    //     });
-    // } else {
-     
-
-      // ejs.renderFile(filePath, {},
-      //   {}, function (err, template) {
-      //     if (err) {
-      //       console.log("Error while ejs.renderFile: ", err)
-      //       throw err;
-      //     } else {
-
-      //       let result = template.replace('$TOKEN_HASH', hash)
-      //       res.end(result);
-      //     }
-      //   });
-    // }
   } catch (error) {
     console.error("ERRORR: ", error);
   }
@@ -193,17 +143,13 @@ const generateSVGFormatImage = async (req, res) => {
 
 const getAllSmartContractData = async (req, res) => {
   try {
-    console.log('---------c1')
     const { LedNFT_CONTRACT } =
       await getWeb3andContractInstances();
-      console.log('---------c2')
 
       let tokenIdToData = {};
 
     let circulatedTokens = await LedNFT_CONTRACT.methods.allMintedId().call();
-    console.log("circulatedTokens", circulatedTokens);
     let totalSupply = circulatedTokens.length;
-    console.log("----------totalSupply: ", totalSupply)
 
     for (let i = 0; i < totalSupply; i++) {
       let blinkingPattern = await LedNFT_CONTRACT.methods
@@ -219,7 +165,6 @@ const getAllSmartContractData = async (req, res) => {
         token_hash: hash,
       };
     }
-    // console.log("tokenIdToData", tokenIdToData);
 
     let nodes = [];
 
@@ -234,12 +179,10 @@ const getAllSmartContractData = async (req, res) => {
         });
       }
     }
-    // Add token_id  as well in the Obj
 
     return res.status(200).json([{ nodes }]);
   } catch (err) {
     console.log(`ERROR: ${err}`);
-    // console.log(err);
     return res.status(500).send({ status: "error" });
   }
 };
@@ -272,8 +215,7 @@ const getTokenURI = async (req, res) => {
 
     return res.send(tokenObj);
   } catch (err) {
-    console.log("error");
-    console.log(err);
+    console.error("ERROR: ", err);
     return res.status(500).send({ status: "error" });
   }
 };
